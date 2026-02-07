@@ -30,7 +30,7 @@
         <footer>Créé avec ❤️ par <span style="text-decoration: dotted underline; cursor: default;" title="Adam only">ESTrate</span> • Tous droits réservés • <span style="cursor: pointer; text-decoration: underline;" onclick="generateError('Flemme')">Mentions légales</span></footer>
     <script>
         if(!window.mobileCheck()){ // On vérifie l'usage d'un smartphone
-            window.location.href = "./index.html"
+        window.location.href = "./index.html"
         }
         let timesClickedNoPodcastThere = 0
         function generateError(errorContent = "Indéfinie"){
@@ -49,7 +49,7 @@
                 },2000)
             }
             error.className = "error"
-            error.innerHTML = `<div><h3>Ouwps &gt;.&lt; ! Une errewur s'est prodwuite :3</h3>
+            error.innerHTML = `<div><h4>Ouwps &gt;.&lt; ! Une errewur s'est prodwuite :3</h4>
     <h3 style="margin-top: -10px;">Résumé de l'erreur : <code>${errorContent}</code></div>`
         error.style.opacity = 0
         errorsDiv.appendChild(error)
