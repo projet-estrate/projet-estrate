@@ -48,7 +48,7 @@
             }
             error.className = "error"
             error.innerHTML = `<div><h3>Ouwps &gt;.&lt; ! Une errewur s'est prodwuite :3</h3>
-    <h3 style="margin-top: -10px;">Résumé de l'erreur : <code>${errorContent}</code></div>`
+    <h3 style="margin-top: -10px;">Résumé de l'erreur : <code>${errorContent}</code></h3></div>`
         error.style.opacity = 0
         errorsDiv.appendChild(error)
         const anim = error.animate([{"opacity":0}, {"opacity":1}], {fill:"forwards", easing: "ease-in", duration: 100}) // On montre la div de manière fluide
