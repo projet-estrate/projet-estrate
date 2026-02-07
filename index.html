@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet EStrate</title>
+    <link rel="icon" href="./assets/svg/favicon.svg">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./mobileCheck.js"></script>
+</head>
+<body>
+  <div class="errors" hidden></div>
+    <div class="header">
+        <div class="main-logo" onclick="window.location.href = 'index.html'"><img class="main-logo-icon" src="./assets/svg/logo-estrate.svg" draggable="false" alt="Logo de EStrate">
+            <div class="main-logo-text"><span style="font-weight: bold;">Estrate</span><br><span>LE site des podcasts scientifiques</span></div>
+            </div>
+            <div class="header-tools">
+                <form class="search-div">
+                    <div class="search-icon"><img src="./assets/svg/search.svg" alt="Loupe de recherche"></div>
+                    <input type="text" placeholder="Rechercher..." required class="search">
+                    <input type="submit" hidden>
+                </form>
+            </div>
+    </div>
+    <div class="podcasts">
+        <h1>Nos derniers podcasts</h1>
+        <div class="podcasts-container"></div>
+        <footer>Créé avec ❤️ par <span style="text-decoration: dotted underline; cursor: default;" title="Adam only">ESTrate</span> • Tous droits réservés • <span style="cursor: pointer; text-decoration: underline;" onclick="generateError('Flemme')">Mentions légales</span></footer>
+    <script>
+        if(window.mobileCheck()){ // On vérifie l'usage d'un smartphone
+            window.location.href = "./mobile.html"
+        }
+        let timesClickedNoPodcastThere = 0
+        function generateError(errorContent = "Indéfinie"){
+            const errorsDiv = document.querySelector(".errors")
+            errorsDiv.hidden = false;
+            // Génère une div erreur en haut de la page
+            const error = document.createElement("div")
+            if(errorContent === "no-podcast-there"){
+                if(timesClickedNoPodcastThere >= noPodcastTexts.length) timesClickedNoPodcastThere = 0
+                errorContent = noPodcastTexts[timesClickedNoPodcastThere]
+                timesClickedNoPodcastThere++
+                let timesClickedNoPodcastThereSaved = timesClickedNoPodcastThere
+                setTimeout(()=>{
+                    if(timesClickedNoPodcastThere === timesClickedNoPodcastThereSaved) timesClickedNoPodcastThere = 0
+                    // Ici, on met une limite de 2 secondes entre chaque clic pour que l'easter egg apparaisse
+                },2000)
+            }
+            error.className = "error"
+            error.innerHTML = `<div><h3>Ouwps &gt;.&lt; ! Une errewur s'est prodwuite :3</h3>
+    <h3 style="margin-top: -10px;">Résumé de l'erreur : <code>${errorContent}</code></div>`
+        error.style.opacity = 0
+        errorsDiv.appendChild(error)
+        const anim = error.animate([{"opacity":0}, {"opacity":1}], {fill:"forwards", easing: "ease-in", duration: 100}) // On montre la div de manière fluide
+        anim.onfinish = ()=>{
+            setTimeout(()=>{
+              const anim2 = error.animate([{"opacity":1}, {"opacity":0}], {fill:"forwards", easing: "ease-in", duration: 100}) // On cache la div de manière fluide
+                anim2.onfinish = ()=>{
+                    error.remove()
+                    if(!document.querySelector(".error")){
+                        errorsDiv.hidden = true // Pour éviter des extravagances dues à l'élément (il doit y avoir mieux)
+                    }
+                }
+            },2000) // L'erreur reste affichée 2 secondes
+        }
+        }
+        function generatePodcasts(filter){ // Pourquoi faire une fonction alors que le site ne sert qu'à un seul simple projet ? jsp    
+            const podcastsContainer = document.querySelector(".podcasts-container")
+            podcastsContainer.innerHTML = ""
+            let podcastRow = document.createElement("div")
+            podcastRow.className = "podcast-row"
+            let podcastsListFiltered = podcastsList
+            if(filter){
+                podcastsListFiltered = podcastsList.filter(e => e.name.toLowerCase().includes(filter.toLowerCase()) || e.topic.toLowerCase().includes(filter.toLowerCase()))
+            }
+            for(let i = 0; i < podcastsListFiltered.length; i++){
+                if(i % 2 === 0 && i != podcastsListFiltered.length){ // Si on a généré deux podcasts dans une seule row, alors on change de row
+                    podcastsContainer.appendChild(podcastRow)
+                    podcastRow = document.createElement("div")
+                    podcastRow.className = "podcast-row"
+                }
+                const podcastI = podcastsListFiltered[i]
+                podcastRow.innerHTML += `<div class="podcast" onclick="${!podcastI.href ? 'generateError(\'no-podcast-there\')' : `window.location.href = \'${podcastI.href}\'`}">
+            <img draggable="false" class="thumbnail-podcast" src="${podcastI.thumbnail}" alt="${podcastI.thumbnailAlt}">
+            <p>${podcastI.name}</p>
+            <p class="topic">${podcastI.topic}</p>
+        </div>`
+            }
+                    podcastsContainer.appendChild(podcastRow)
+        }
+        const searchForm = document.querySelector(".search-div")
+        const searchInput = document.querySelector(".search")
+        searchInput.value = ""
+        const podcastsList = [
+            {"name":'Problème de Bâle : ζ(2) = &pi;<span style="font-variant-position: super;">2</span>/6 par les séries entières', "thumbnail":"./assets/png/EStrate_probleme_de_bale.png", "thumbnailAlt":"Affiche du podcast sur la démo du problème de Bâle", "topic":"Mathématiques", "href":undefined},
+            {"name":"L'hérédité est-elle seulement liée à l'ADN ?", "thumbnail":"./assets/png/EStrate_heredite_et_adn.png", "thumbnailAlt":"Affiche du podcast sur l'hérédité et l'ADN", "topic":"Sciences de la Vie et de la Terre", "href":undefined},
+            {"name":"Les liens entre le mouvement de la photosphère solaire et l'optique (Sujet Physique A Polytechnique 2024)", "thumbnail":"./assets/png/EStrate_mouvement_de_la_photosphere_et_optique.png", "thumbnailAlt":"Affiche du podcast sur la photosphère solaire et l'optique", "topic":"Sciences Physiques", "href":undefined},
+            {"name":"Les impacts de l'intelligence artificielle sur l'environnement", "thumbnail":"./assets/png/EStrate_ia_env.png", "thumbnailAlt":"Affiche du podcast sur l'impact de l'IA dans l'environnement", "topic":"Sciences Informatiques - Sciences de la Terre", "href":"podcasts/ia_env.html"}
+        ]
+        const noPodcastTexts = [
+            "Ce podcast n'est pas disponible",
+            "Ce podcast est hors-sujet",
+            "Ce podcast est toujours hors-sujet",
+            "Je n'ai pas eu la foi de faire ce podcast",
+            "C'était trop pour moi",
+            "Le podcast donne envie je sais",
+            "Il reste une multitude de messages d'erreurs",
+            "Peut-être quelques centaines",
+            "Ou quelques dizaines",
+            "Ou pas",
+            "Les messages d'erreur vont se terminer",
+            "Dans 3",
+            "2",
+            "1",
+            "0",
+            "-1",
+            "Il reste des messages ?!",
+            "Je vais demander à mon créateur",
+            "*demande à adam*",
+            "Ah non c'est le dernier. Merci !"
+        ]
+        searchForm.addEventListener("submit",(e)=>{
+            e.preventDefault()
+            generatePodcasts(searchForm.value)
+            searchForm.value = ""
+        })
+        window.onload = ()=>{
+            generatePodcasts()
+        }
+    </script>
+</body>
+</html>
