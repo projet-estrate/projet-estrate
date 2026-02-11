@@ -123,11 +123,10 @@
         ]
         searchForm.addEventListener("submit",(e)=>{
             e.preventDefault()
-            generatePodcasts(searchForm.value)
-            searchForm.value = ""
+            window.location.href = `./mobile.html?search=${searchInput.value}`
         })
         window.onload = ()=>{
-            generatePodcasts()
+            generatePodcasts(window.location.href.includes("?search=") ? window.location.href.split("?search=")[1] : "")
         }
     </script>
 </body>

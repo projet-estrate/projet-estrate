@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projet EStrate</title>
     <link rel="icon" href="../assets/svg/favicon.svg">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style-mobile.css">
     <script src="../mobileCheck.js"></script>
 </head>
 <body>
@@ -78,8 +78,8 @@
     </div>
         <footer>Créé avec ❤️ par <span style="text-decoration: dotted underline; cursor: default;" title="Adam only">ESTrate</span> • Tous droits réservés • <span style="cursor: pointer; text-decoration: underline;" onclick="generateError('Flemme')">Mentions légales</span></footer>
     <script>
-        if(window.mobileCheck()){ // On vérifie l'usage d'un smartphone
-            window.location.href = "./ia_env_mobile.html"
+        if(!window.mobileCheck()){ // On vérifie l'usage d'un smartphone
+            window.location.href = "./ia_env.html"
         }
         let timesClickedNoPodcastThere = 0
         function generateError(errorContent = "Indéfinie"){
@@ -120,7 +120,7 @@
         searchInput.value = ""
         searchForm.addEventListener("submit",(e)=>{
             e.preventDefault()
-            window.location.href = `../index.html?search=${searchInput.value}`
+            window.location.href = `../mobile.html?search=${searchInput.value}`
         })
         // Gestion de l'audio
             const audio = document.getElementById("audio");
